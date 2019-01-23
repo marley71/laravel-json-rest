@@ -7,6 +7,11 @@
  */
 
 
-Route::group(['as' => 'json/'], function () {
-    Route::get('index', 'JsonController@index');
+Route::group(['as' => 'json'], function () {
+    Route::get('json/index', 'JsonController@getIndex');
+    Route::get('json/{model}', 'JsonController@getList');
+
+    Route::get('json/{model}/new', 'JsonController@getNew');
+    Route::get('json/{model}/{id}', 'JsonController@getShow');
+
 });
