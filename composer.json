@@ -23,7 +23,7 @@
   "extra": {
     "laravel": {
       "providers": [
-
+        "Marley71\\JsonRest\\JsonRestServiceProvider"
       ]
     }
   }
