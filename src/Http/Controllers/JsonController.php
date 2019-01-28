@@ -103,9 +103,7 @@ class JsonController extends Controller {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
             $model = $modelClass::find($pk);
-            $values = Input::get();
-            $model->fill($values);
-            $model->save();
+            $model->delete();
             $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
@@ -115,8 +113,17 @@ class JsonController extends Controller {
 
     public function postDelete($model) {
         try {
-            //$modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $ids = Input::get('ids',array());
+//            echo "------ ids ----\n";
+//            print_r($ids);
+//            echo "----------------\n";
 
+            if (count($ids) > 0) {
+                //echo "destroy \n";
+                $model = new $modelClass();
+                $model->destroy($ids);
+            }
             //$this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
