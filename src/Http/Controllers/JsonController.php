@@ -75,7 +75,7 @@ class JsonController extends Controller {
         try {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::find($pk);
+            $model = $modelClass::findOrFail($pk);
             $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
@@ -87,7 +87,7 @@ class JsonController extends Controller {
         try {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::find($pk);
+            $model = $modelClass::findOrFail($pk);
             $values = Input::get();
             $model->fill($values);
             $model->save();
@@ -102,7 +102,7 @@ class JsonController extends Controller {
         try {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::find($pk);
+            $model = $modelClass::findOrFail($pk);
             $model->delete();
             $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
@@ -131,6 +131,28 @@ class JsonController extends Controller {
         return $this->_json();
     }
 
+
+    public function postSet($model,$fieldName,$value) {
+
+        try {
+            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $id = Input::get('id');
+            if (is_array($id)) {
+                $modelClass::whereIn('id',$id)->update([$fieldName => $value]);
+                $this->json['result'] = [];
+            } else {
+                //die($modelClass);
+                $model = $modelClass::findOrFail($id);
+                $model->$fieldName = $value;
+                $model->save();
+                $this->json['result'] =  $model->toArray();
+            }
+
+        } catch (\Exception $e) {
+            $this->_error($e->getMessage());
+        }
+        return $this->_json();
+    }
 
     protected function _error($msg) {
         $this->json['error'] = 1;

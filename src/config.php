@@ -7,6 +7,8 @@
  */
 
 return [
-    'models-namespace' => 'App\\'
-
+    'models-namespace' => 'App\\',
+    'prefix' => 'api',
+    'middleware' => 'api',
+    'models' => ['user'],
 ];

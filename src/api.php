@@ -8,19 +8,39 @@
 
 
 Route::group(['as' => 'json'], function () {
-    Route::get('/api/json/index', 'JsonController@getIndex');
-    Route::get('/api/json/{model}', 'JsonController@getList');
+    Route::get('json/index', 'JsonController@getIndex');
+    Route::get('json/{model}', 'JsonController@getList')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
-    Route::get('/api/json/{model}/new', 'JsonController@getNew');
-    Route::get('/api/json/{model}/{id}', 'JsonController@getShow');
+    Route::get('json/{model}/new', 'JsonController@getNew')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
+    Route::get('json/{model}/{id}', 'JsonController@getShow')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
-    Route::post('/api/json/{model}','JsonController@postCreate');
+    Route::post('json/{model}','JsonController@postCreate')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
-    Route::get('/api/json/{model}/{id}/edit','JsonController@getEdit');
+    Route::get('json/{model}/{id}/edit','JsonController@getEdit')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
-    Route::put('/api/json/{model}/{id}','JsonController@postUpdate');
-    Route::delete('/api/json/{model}/{id}','JsonController@delete');
+    Route::put('json/{model}/{id}','JsonController@postUpdate')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
+    Route::delete('json/{model}/{id}','JsonController@delete')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
-    Route::post('/api/json/{model}/delete','JsonController@postDelete');
+    Route::post('json/{model}/delete','JsonController@postDelete')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
+
+    Route::post('json/set/{model}/{fielName}/{value}','JsonController@postSet')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
 
 });
