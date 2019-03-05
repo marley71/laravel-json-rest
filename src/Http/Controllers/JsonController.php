@@ -20,6 +20,19 @@ class JsonController extends Controller {
         'msg' => '',
     ];
 
+    public function getSearch($model) {
+        try {
+            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            //die($modelClass);
+            $model = new $modelClass();
+            $attrs = $model->getAttributes();
+            $this->json['result'] =  $attrs;
+        } catch (\Exception $e) {
+            $this->_error($e->getMessage());
+        }
+        return $this->_json();
+    }
+
     public function getIndex() {
         $this->json['info'] =  [
             'package' => 'laravel-json-rest'
@@ -29,10 +42,20 @@ class JsonController extends Controller {
 
     public function getList($model) {
         try {
-            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $formManagerClass = \config('json_rest.form-manager');
+            $foormManager = new $formManagerClass("$model.list",request());
+            $foorm = $foormManager->getForm();
+            //$config = $foorm->getConfig();
+
+            //$data = $foorm->getFormData();
+            //$metadata = $foorm->getFormMetadata();
+
+            $this->json['result'] = $foorm->getFormData();
+            $this->json['metadata'] = $foorm->getFormMetadata();
+            //$modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::paginate(5);
-            $this->json['result'] =  $model->toArray();
+            //$model = $modelClass::paginate(5);
+            //$this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
         }
@@ -43,7 +66,7 @@ class JsonController extends Controller {
         try {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::find($pk);
+            $model = $modelClass::findOrFail($pk);
             $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
