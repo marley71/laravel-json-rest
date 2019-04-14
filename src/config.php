@@ -11,4 +11,5 @@ return [
     'prefix' => 'api',
     'middleware' => 'api',
     'models' => ['user'],
+    'form-manager' => 'Gecche\\Foorm\\FormManager'
 ];

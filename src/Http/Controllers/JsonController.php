@@ -42,10 +42,20 @@ class JsonController extends Controller {
 
     public function getList($model) {
         try {
-            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $formManagerClass = \config('json_rest.form-manager');
+            $foormManager = new $formManagerClass("$model.list",request());
+            $foorm = $foormManager->getForm();
+            //$config = $foorm->getConfig();
+
+            //$data = $foorm->getFormData();
+            //$metadata = $foorm->getFormMetadata();
+
+            $this->json['result'] = $foorm->getFormData();
+            $this->json['metadata'] = $foorm->getFormMetadata();
+            //$modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::paginate(5);
-            $this->json['result'] =  $model->toArray();
+            //$model = $modelClass::paginate(5);
+            //$this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());
         }
@@ -66,21 +76,53 @@ class JsonController extends Controller {
 
     public function getNew($model) {
         try {
-            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
-            $model = new $modelClass();
-            $this->json['result'] =  $model->toArray();
+            $formManagerClass = \config('json_rest.form-manager');
+            $foormManager = new $formManagerClass("$model.insert",request());
+            $foorm = $foormManager->getForm();
+            //$config = $foorm->getConfig();
+
+            //$data = $foorm->getFormData();
+            //$metadata = $foorm->getFormMetadata();
+
+            $this->json['result'] = $foorm->getFormData();
+            $this->json['metadata'] = $foorm->getFormMetadata();
+
+
+//            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+//            $model = new $modelClass();
+//            $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
-            $this->_error($e->getMessage());
+            $this->_error($e->getTraceAsString());
         }
         return $this->_json();
     }
 
     public function postCreate($model) {
-        $modelClass = \config('json_rest.models-namespace') . studly_case($model);
-        $model = new $modelClass();
-        $values = Input::get();
-        $model->fill($values);
-        $model->save();
+        try {
+
+
+            $formManagerClass = \config('json_rest.form-manager');
+            $foormManager = new $formManagerClass("$model.insert",request());
+            $foorm = $foormManager->getForm();
+
+            $foorm->save();
+            //$config = $foorm->getConfig();
+
+            //$data = $foorm->getFormData();
+            //$metadata = $foorm->getFormMetadata();
+
+            $this->json['result'] = $foorm->getFormData();
+            $this->json['metadata'] = $foorm->getFormMetadata();
+
+
+//            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+//            $model = new $modelClass();
+//            $this->json['result'] =  $model->toArray();
+        } catch (\Exception $e) {
+            $this->_error($e->getMessage());
+        }
+        return $this->_json();
+
     }
 
 
