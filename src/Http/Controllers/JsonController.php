@@ -20,6 +20,19 @@ class JsonController extends Controller {
         'msg' => '',
     ];
 
+    public function getSearch($model) {
+        try {
+            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            //die($modelClass);
+            $model = new $modelClass();
+            $attrs = $model->getAttributes();
+            $this->json['result'] =  $attrs;
+        } catch (\Exception $e) {
+            $this->_error($e->getMessage());
+        }
+        return $this->_json();
+    }
+
     public function getIndex() {
         $this->json['info'] =  [
             'package' => 'laravel-json-rest'
@@ -43,7 +56,7 @@ class JsonController extends Controller {
         try {
             $modelClass = \config('json_rest.models-namespace') . studly_case($model);
             //die($modelClass);
-            $model = $modelClass::find($pk);
+            $model = $modelClass::findOrFail($pk);
             $this->json['result'] =  $model->toArray();
         } catch (\Exception $e) {
             $this->_error($e->getMessage());

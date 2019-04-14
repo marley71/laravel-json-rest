@@ -9,7 +9,12 @@
 
 Route::group(['as' => 'json'], function () {
     Route::get('json/index', 'JsonController@getIndex');
+
     Route::get('json/{model}', 'JsonController@getList')->where([
+        'model' => join(config('json_rest.models'))
+    ]);
+
+    Route::get('json/{model}/search', 'JsonController@getSearch')->where([
         'model' => join(config('json_rest.models'))
     ]);
 
