@@ -8,44 +8,48 @@
 
 
 Route::group(['as' => 'json'], function () {
+    $whereModel = join("|",config('json_rest.models'));
     Route::get('json/index', 'JsonController@getIndex');
 
     Route::get('json/{model}', 'JsonController@getList')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
+    //die ($where);
     Route::get('json/{model}/search', 'JsonController@getSearch')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::get('json/{model}/new', 'JsonController@getNew')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
+
     Route::get('json/{model}/{id}', 'JsonController@getShow')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::post('json/{model}','JsonController@postCreate')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::get('json/{model}/{id}/edit','JsonController@getEdit')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::put('json/{model}/{id}','JsonController@postUpdate')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
+
     Route::delete('json/{model}/{id}','JsonController@delete')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::post('json/{model}/delete','JsonController@postDelete')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
     Route::post('json/set/{model}/{fielName}/{value}','JsonController@postSet')->where([
-        'model' => join(config('json_rest.models'))
+        'model' => $whereModel
     ]);
 
 });

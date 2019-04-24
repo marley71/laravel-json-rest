@@ -49,8 +49,11 @@ class JsonRestServiceProvider extends ServiceProvider {
         $this->publishes([
             __DIR__.'./config.php' => config_path('json_rest.php'),
         ]);
-        Route::prefix(config('json_rest.prefix'))
-            ->middleware(config('json_rest.middleware'))
+        $middleware = config('json_rest.middleware');
+        $prefix = config('json_rest.prefix');
+
+        Route::middleware($middleware)
+            ->prefix($prefix)
             //->namespace('Marley71\\JsonRest\\Http\\Controllers')
             ->group(__DIR__.'/api.php');
 
