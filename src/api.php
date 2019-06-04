@@ -48,7 +48,7 @@ Route::group(['as' => 'json'], function () {
         'model' => $whereModel
     ]);
 
-    Route::post('json/set/{model}/{fielName}/{value}','JsonController@postSet')->where([
+    Route::post('json/set/{model}/{fieldName}/{value}','JsonController@postSet')->where([
         'model' => $whereModel
     ]);
 
