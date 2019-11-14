@@ -11,5 +11,6 @@ return [
     'prefix' => 'api',
     'middleware' => 'api',
     'models' => ['user'],
-    'form-manager' => 'Gecche\\Foorm\\FormManager'
+    'form-manager' => 'Gecche\\Foorm\\FormManager',
+    'namespace' => 'Marley71\\JsonRest\\Http\\Controllers',
 ];
