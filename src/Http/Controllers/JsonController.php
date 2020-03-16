@@ -209,6 +209,30 @@ class JsonController extends Controller {
         return $this->_json();
     }
 
+    public function getAutocomplete($model) {
+
+        try {
+            $fields = Input::get('fields',[]);
+            $query = Input::get('query','');
+
+            $modelClass = \config('json_rest.models-namespace') . studly_case($model);
+            $model = new $modelClass();
+            foreach ($fields as $field) {
+                $model->where($field,'like',"%$query%");
+            }
+            $result = $model->get()->toArray();
+            $this->json['result'] = $result;
+
+        } catch (\Exception $e) {
+            $this->_error($e->getMessage());
+        }
+        return $this->_json();
+    }
+
+    public function postUploadfile($model) {
+
+    }
+
     protected function _error($msg) {
         $this->json['error'] = 1;
         $this->json['msg'] = $msg;

@@ -10,10 +10,10 @@
 Route::group(['as' => 'json'], function () {
     $whereModel = join("|",config('json_rest.models'));
     Route::get('json/index', 'JsonController@getIndex');
-
-    Route::get('json/{model}', 'JsonController@getList')->where([
+    Route::get('json/{model}/autocomplete','JsonController@getAutocomplete')->where([
         'model' => $whereModel
     ]);
+
 
     //die ($where);
     Route::get('json/{model}/search', 'JsonController@getSearch')->where([
@@ -28,6 +28,9 @@ Route::group(['as' => 'json'], function () {
         'model' => $whereModel
     ]);
 
+    Route::get('json/{model}', 'JsonController@getList')->where([
+        'model' => $whereModel
+    ]);
     Route::post('json/{model}','JsonController@postCreate')->where([
         'model' => $whereModel
     ]);
@@ -44,12 +47,19 @@ Route::group(['as' => 'json'], function () {
         'model' => $whereModel
     ]);
 
-    Route::post('json/{model}/delete','JsonController@postDelete')->where([
-        'model' => $whereModel
-    ]);
+//    Route::post('json/{model}/delete','JsonController@postDelete')->where([
+//        'model' => $whereModel
+//    ]);
 
     Route::post('json/set/{model}/{fieldName}/{value}','JsonController@postSet')->where([
         'model' => $whereModel
     ]);
+    Route::post('json/{model}/multi-delete','JsonController@postMultiDelete')->where([
+        'model' => $whereModel
+    ]);
 
+
+    Route::post('json/{model}/uploadfile','JsonController@postMultiDelete')->where([
+        'model' => $whereModel
+    ]);
 });
